@@ -13,8 +13,7 @@ threads=8
 
 ## Network IP
 
-* `/etc/netplan`  
-  `.yaml`
+* `/etc/netplan/config.yaml`  
 
 ```yaml 
 network:
@@ -25,16 +24,23 @@ network:
       addresses:
         - 192.168.1.53/24
         - 192.168.120.254/24
+      routes:
+        - to: default
+          via: 192.168.1.1
+          metric: 100
+        - to: default
+          via: 192.168.120.254
+          metric: 200
+        - to: default
+          via: 192.168.120.254
+          metric: 300
+          on-link: true
       gateway4: 192.168.1.1
       nameservers:
           addresses: [8.8.8.8, 8.8.4.4]
-      dhcp4: no
-      dhcp6: no
-      set-name: eth0
+      dhcp4: false
+      dhcp6: false
       mtu: 1500
-      wakeonlan: true
-      netmask: 255.255.255.0
-      broadcast: 192.168.120.255
 ```
 
 `netplan apply`
@@ -42,6 +48,8 @@ network:
 ## Filesystem Table
 
 * `/etc/fstab`
+
+192.168.120.4:/volume1/partimag /partimag nfs4 defaults 0 0
 
 ## DHCP Ubuntu
 
